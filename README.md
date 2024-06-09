@@ -23,7 +23,16 @@ Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
 # Kubernetes
 
-After researching several articles I decided on using K3S instead of K3D, K2S, Kind or MiniCube.
+After researching several articles I decided on using:
+
+- K3S ([https://k3s.io/])
+
+Alternatives considered were:
+
+- K3D ([https://k3d.io/v5.6.3/])
+- K2D ([https://k2d.io/])
+- Kind ([https://github.com/kubernetes-sigs/kind])
+- MiniCube ([https://kubernetes.io/docs/tutorials/hello-minikube/]).
 
 Initially, I used the Raspberry PI 3B+ as the control plane but as soon as I had built the cluster and started querying the API with `kubectl` and `K9S` it became apparent that the 3B+ was lagging considerably and not able to cope.
 
