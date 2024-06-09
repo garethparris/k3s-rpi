@@ -17,7 +17,7 @@ In the Raspberry PI 3B models I am using a 64GB SD card directly.
 
 Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
-![images/unifi-switch.png]
+![Ubiquity Switch Lite 16 PoE](./images/unifi-switch.png)
 
 # Kubernetes
 
@@ -146,9 +146,9 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 
 You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
-![images/kubectl-nodes.png]
-![images/k9s-namespace.png]
-![images/k9s-nodes.png]
+![kubectl get nodes](./images/kubectl-nodes.png)
+![k9s nodes](./images/k9s-namespace.png)
+![k9s namespaces](./images/k9s-nodes.png)
 
 # References
 
