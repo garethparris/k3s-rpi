@@ -38,6 +38,8 @@ Initially, I used the Raspberry PI 3B+ as the control plane but as soon as I had
 
 In the final configuration here, the master node is one of the Raspberry PI 4B models with 4GB RAM.
 
+![k9s nodes](./images/k9s-nodes.png)
+
 # Initial Setup
 
 The steps below are all executed from Mac OS using Kitty and Terminus.
@@ -190,13 +192,9 @@ You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
 ![kubectl get nodes](./images/kubectl-nodes.png)
 
-## k9s namespaces
+## k9s
 
 ![k9s namespaces](./images/k9s-namespace.png)
-
-## k9s nodes
-
-![k9s nodes](./images/k9s-nodes.png)
 
 # References
 
