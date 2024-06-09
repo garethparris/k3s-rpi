@@ -17,6 +17,8 @@ In the Raspberry PI 3B models I am using a 64GB SD card directly.
 
 Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
+![images/unifi-switch.png]
+
 # Kubernetes
 
 After researching several articles I decided on using K3S instead of K3D, K2S, Kind or MiniCube.
@@ -141,6 +143,12 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 - On Mac OS, paste the .kube/config file contents to:
 
   `~/.kube/config`
+
+You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
+
+![images/kubectl-nodes.png]
+![images/k9s-namespace.png]
+![images/k9s-nodes.png]
 
 # References
 
