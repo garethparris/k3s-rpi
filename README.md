@@ -45,17 +45,18 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 
 - Update the Raspberry PI:
 
-  `sudo apt-get update`
-
-  `sudo apt-get upgrade`
-
-  `sudo apt-get full-upgrade`
+```
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get full-upgrade
+```
 
 - Turn off the swapfile:
 
-  `sudo swapoff -a`
-
-  `sudo nano /etc/dphys-swapfile`
+```
+sudo swapoff -a
+sudo nano /etc/dphys-swapfile
+```
 
 - Set: `CONF_SWAPSIZE=0`
 
@@ -71,43 +72,39 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 
 - Add:
 
-  `# WiFi`
-
-  `blacklist brcmfmac`
-
-  `blacklist brcmutil`
-
-  `# Bluetooth`
-
-  `blacklist btbcm`
-
-  `blacklist hci_uart`
+```
+# WiFi
+blacklist brcmfmac
+blacklist brcmutil
+# Bluetooth
+blacklist btbcm
+blacklist hci_uart
+```
 
 - Continue disabling services:
 
-  `sudo systemctl disable bluetooth && sudo systemctl stop bluetooth`
-
-  `sudo systemctl disable avahi-daemon && sudo systemctl stop avahi-daemon`
-
-  `sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy`
+```
+sudo systemctl disable bluetooth && sudo systemctl stop bluetooth
+sudo systemctl disable avahi-daemon && sudo systemctl stop avahi-daemon
+sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy
+```
 
 - For RPi mounted in Uctronics rack with OLED screens enable I2C interface and installed OLED display software:
 
-  `sudo apt-get install git`
-
-  `git clone https://github.com/UCTRONICS/U6143_ssd1306.git`
-
-  `sudo nano /etc/rc.local`
+```
+sudo apt-get install git
+git clone https://github.com/UCTRONICS/U6143_ssd1306.git
+sudo nano /etc/rc.local
+```
 
 - Add:
 
-  `cd /home/parrisg/U6143_ssd1306/C`
-
-  `sudo make clean`
-
-  `sudo make`
-
-  `sudo ./display &`
+```
+cd /home/parrisg/U6143_ssd1306/C
+sudo make clean
+sudo make
+sudo ./display &
+```
 
 - Reboot:
 
@@ -137,9 +134,10 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 
 - On Mac OS, install `k3sup` and `k9s` using `brew`:
 
-  `brew install k3sup`
-
-  `brew install k9s`
+```
+brew install k3sup
+brew install k9s
+```
 
 - On Mac OS, paste the .kube/config file contents to:
 
@@ -148,7 +146,9 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
 ![kubectl get nodes](./images/kubectl-nodes.png)
+
 ![k9s nodes](./images/k9s-namespace.png)
+
 ![k9s namespaces](./images/k9s-nodes.png)
 
 # References
@@ -160,6 +160,12 @@ You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 [https://alexsniffin.medium.com/a-guide-to-building-a-kubernetes-cluster-with-raspberry-pis-23fa4938d420]
 
 [https://www.linkedin.com/pulse/build-your-own-private-cloud-home-raspberry-pi-minio-huerta-arias/]
+
+# Images
+
+![Hardware Front View](./images/rack-front.png)
+
+![Hardware Top View](./images/rack-top.png)
 
 # Notes
 
