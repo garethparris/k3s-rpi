@@ -50,9 +50,7 @@ ssh username@192.168.3.xxx
 - Update the Raspberry PI:
 
 ```
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get full-upgrade
+sudo apt-get update && sudo apt-get upgrade -y
 ```
 
 - Turn off the swapfile:
