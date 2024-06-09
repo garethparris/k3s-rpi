@@ -175,11 +175,17 @@ brew install k9s
 
 You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
+## kubectl (`kc` is an alias for `sudo kubectl`)
+
 ![kubectl get nodes](./images/kubectl-nodes.png)
 
-![k9s nodes](./images/k9s-namespace.png)
+## k9s namespaces
 
-![k9s namespaces](./images/k9s-nodes.png)
+![k9s namespaces](./images/k9s-namespace.png)
+
+## k9s nodes
+
+![k9s nodes](./images/k9s-nodes.png)
 
 # References
 
