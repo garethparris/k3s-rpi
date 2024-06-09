@@ -35,6 +35,7 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 - Download latest 64-bit Raspberry PI OS Lite from [https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz]
 - Install the OS on each SD card using the imager. I created a profile to allow SSH access, set a username and password, and set the localisation.
 - I am using DHCP to allocate each device with a fixed IP address in a dedicated development network (`192.168.3.0/27`) created in the Ubiquity Network management interface.
+  ![Device Network Settings](./images/unifi-nodes.png)
 
 # Raspberry PI Setup
 
