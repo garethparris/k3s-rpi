@@ -25,14 +25,14 @@ Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
 After researching several articles I decided on using:
 
-- K3S ([https://k3s.io/])
+- [K3S](https://k3s.io/)
 
 Alternatives considered were:
 
-- K3D ([https://k3d.io/v5.6.3/])
-- K2D ([https://k2d.io/])
-- Kind ([https://github.com/kubernetes-sigs/kind])
-- MiniCube ([https://kubernetes.io/docs/tutorials/hello-minikube/]).
+- [K3D](https://k3d.io/v5.6.3/)
+- [K2D](https://k2d.io/)
+- [Kind](https://github.com/kubernetes-sigs/kind)
+- [MiniCube](https://kubernetes.io/docs/tutorials/hello-minikube/)
 
 Initially, I used the Raspberry PI 3B+ as the control plane but as soon as I had built the cluster and started querying the API with `kubectl` and `K9S` it became apparent that the 3B+ was lagging considerably and not able to cope.
 
@@ -42,8 +42,8 @@ In the final configuration here, the master node is one of the Raspberry PI 4B m
 
 The steps below are all executed from Mac OS using Kitty and Terminus.
 
-- Download Raspberry PI Imager from [https://www.raspberrypi.com/software/]
-- Download latest 64-bit Raspberry PI OS Lite from [https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz]
+- Download [Raspberry PI Imager](https://www.raspberrypi.com/software/)
+- Download latest [64-bit Raspberry PI OS Lite](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz)
 - Install the OS on each SD card using the imager. I created a profile to allow SSH access, set a username and password, and set the localisation.
 - I am using DHCP to allocate each device with a fixed IP address in a dedicated development network (`192.168.3.0/27`) created in the Ubiquity Network management interface.
   ![Device Network Settings](./images/unifi-nodes.png)
@@ -200,13 +200,13 @@ You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
 # References
 
-[https://plone.lucidsolutions.co.nz/hardware/raspberry-pi/3/disable-unwanted-raspbian-services]
+[](https://plone.lucidsolutions.co.nz/hardware/raspberry-pi/3/disable-unwanted-raspbian-services)
 
-[https://anthonynsimon.com/blog/kubernetes-cluster-raspberry-pi/#bonus-using-nginx-instead-of-traefik-as-ingress]
+[](https://anthonynsimon.com/blog/kubernetes-cluster-raspberry-pi/#bonus-using-nginx-instead-of-traefik-as-ingress)
 
-[https://alexsniffin.medium.com/a-guide-to-building-a-kubernetes-cluster-with-raspberry-pis-23fa4938d420]
+[](https://alexsniffin.medium.com/a-guide-to-building-a-kubernetes-cluster-with-raspberry-pis-23fa4938d420)
 
-[https://www.linkedin.com/pulse/build-your-own-private-cloud-home-raspberry-pi-minio-huerta-arias/]
+[](https://www.linkedin.com/pulse/build-your-own-private-cloud-home-raspberry-pi-minio-huerta-arias/)
 
 # More Images
 
