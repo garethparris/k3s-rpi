@@ -13,6 +13,8 @@ I am using the following hardware:
 
 On the Raspberry PI 4B models I am using a 64GB SD card connected via a USB 3.0 SD Card reader instead of the built-in SD card slot for increased data transfer speed.
 
+![Hardware Front View](./images/rack-front.png)
+
 In the Raspberry PI 3B models I am using a 64GB SD card directly.
 
 Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
@@ -41,7 +43,9 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 
 - Connect to each RPi using SSH:
 
-  `ssh username@192.168.3.xxx`
+```
+ssh username@192.168.3.xxx
+```
 
 - Update the Raspberry PI:
 
@@ -62,13 +66,21 @@ sudo nano /etc/dphys-swapfile
 
 - Enable cgroup:
 
-  `sudo nano /boot/firmware/cmdline.txt`
+```
+sudo nano /boot/firmware/cmdline.txt
+```
 
-- Add: `cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory`
+- Add:
+
+```
+cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+```
 
 - Disable other services:
 
-  `sudo nano /etc/modprobe.d/raspi-blacklist.conf`
+```
+sudo nano /etc/modprobe.d/raspi-blacklist.conf
+```
 
 - Add:
 
@@ -100,7 +112,7 @@ sudo nano /etc/rc.local
 - Add:
 
 ```
-cd /home/parrisg/U6143_ssd1306/C
+cd /home/pi/U6143_ssd1306/C
 sudo make clean
 sudo make
 sudo ./display &
@@ -108,29 +120,41 @@ sudo ./display &
 
 - Reboot:
 
-  `sudo reboot`
+```
+sudo reboot
+```
 
 # Kubernetes Setup
 
 - On the master node, install K3S:
 
-  `curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --flannel-backend=host-gw --tls-san=192.168.3.10 --bind-address=192.168.3.10 --advertise-address=192.168.3.10 --node-ip=192.168.3.10 --cluster-init" sh -s -`
+```
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --flannel-backend=host-gw --tls-san=192.168.3.10 --bind-address=192.168.3.10 --advertise-address=192.168.3.10 --node-ip=192.168.3.10 --cluster-init" sh -s -
+```
 
 - Extract the token:
 
-  `sudo cat /var/lib/rancher/k3s/server/node-token`
+```
+sudo cat /var/lib/rancher/k3s/server/node-token
+```
 
 - On each of the worker nodes, install K3S with the extracted token:
 
-  `curl -sfL https://get.k3s.io | K3S_URL=https://192.168.3.10:6443 K3S_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" sh -`
+```
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.3.10:6443 K3S_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" sh -
+```
 
 - On the master node, install `kubectl`:
 
-  `curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"`
+```
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+```
 
 - On the master node, copy the `.kube/config` file contents:
 
-  `sudo cat /etc/rancher/k3s/k3s.yaml`
+```
+sudo cat /etc/rancher/k3s/k3s.yaml
+```
 
 - On Mac OS, install `k3sup` and `k9s` using `brew`:
 
@@ -139,9 +163,7 @@ brew install k3sup
 brew install k9s
 ```
 
-- On Mac OS, paste the .kube/config file contents to:
-
-  `~/.kube/config`
+- On Mac OS, paste the `.kube/config` file from the master node contents to: `~/.kube/config`
 
 You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
@@ -161,9 +183,7 @@ You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 
 [https://www.linkedin.com/pulse/build-your-own-private-cloud-home-raspberry-pi-minio-huerta-arias/]
 
-# Images
-
-![Hardware Front View](./images/rack-front.png)
+# More Images
 
 ![Hardware Top View](./images/rack-top.png)
 
