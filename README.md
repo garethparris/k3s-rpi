@@ -99,7 +99,13 @@ sudo systemctl disable avahi-daemon && sudo systemctl stop avahi-daemon
 sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy
 ```
 
-- For RPi mounted in Uctronics rack with OLED screens enable I2C interface and installed OLED display software:
+- If using the UCTronics Rack with their OLED screens you need to enable I2C interface and install the OLED display software. I enabled the I2C interface using `raspi-config`:
+
+```
+sudo raspi-config
+```
+
+- Install GIT and pull down the repository:
 
 ```
 sudo apt-get install git
