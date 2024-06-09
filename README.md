@@ -116,6 +116,8 @@ sudo make
 sudo ./display &
 ```
 
+![UCTronics OLED Display](./images/oled-display.png)
+
 - Reboot:
 
 ```
