@@ -1,4 +1,4 @@
-# SSD, RAID 10 and NFS Setup
+# K3S Local Registry Setup
 
 K3S Build and Configuration with Raspberry PIs
 
