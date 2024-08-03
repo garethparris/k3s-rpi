@@ -215,7 +215,7 @@ sdi         8:128  0 238.5G  0 disk
   └─md127   9:127  0 475.7G  0 raid10 
 ```
 
-Note how the RAID identified has changed from `md0` to `md127`.
+Note how the RAID identifier has changed from `md0` to `md127`.
 
 - Mount the drive:
 
