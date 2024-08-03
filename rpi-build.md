@@ -15,7 +15,7 @@ On the Raspberry PI 4B models I am using a 64GB SD card connected via a USB 3.0 
 
 ![Hardware Front View](./images/rack-front.png)
 
-In the Raspberry PI 3B models I am using a 64GB SD card directly.
+In all Raspberry PI models I am using a 64GB SD card, either via an external USB3 card reader, or in the PIs SD card slot.
 
 Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
@@ -42,13 +42,16 @@ ssh username@192.168.3.xxx
 - Update the Raspberry PI:
 
 ```bash
-sudo apt-get update && sudo apt-get upgrade -y
+sudo apt update && sudo apt upgrade -y
 ```
 
 - Turn off the swapfile:
 
 ```bash
 sudo swapoff -a
+```
+
+```bash
 sudo nano /etc/dphys-swapfile
 ```
 
@@ -60,10 +63,10 @@ sudo nano /etc/dphys-swapfile
 sudo nano /boot/firmware/cmdline.txt
 ```
 
-- Add:
+- Add the following to the end of line 1:
 
 ```bash
-cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 ```
 
 - Disable other services:
@@ -72,7 +75,7 @@ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 sudo nano /etc/modprobe.d/raspi-blacklist.conf
 ```
 
-- Add:
+- Add the following:
 
 ```bash
 # WiFi
@@ -81,13 +84,20 @@ blacklist brcmutil
 # Bluetooth
 blacklist btbcm
 blacklist hci_uart
+
 ```
 
-- Continue disabling services:
+- Disable other uneccessary services:
 
 ```bash
 sudo systemctl disable bluetooth && sudo systemctl stop bluetooth
+```
+
+```bash
 sudo systemctl disable avahi-daemon && sudo systemctl stop avahi-daemon
+```
+
+```bash
 sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy
 ```
 
@@ -95,7 +105,7 @@ sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy
 
 ![UCTronics OLED Display](./images/oled-display.png)
 
-- Emable the I2C interface using `raspi-config`:
+- Enable the I2C interface using `raspi-config`:
 
 ```bash
 sudo raspi-config
@@ -104,18 +114,30 @@ sudo raspi-config
 - Install GIT and pull down the repository:
 
 ```bash
-sudo apt-get install git
+sudo apt install git -y
+```
+
+```bash
 git clone https://github.com/UCTRONICS/U6143_ssd1306.git
+```
+
+```bash
 sudo nano /etc/rc.local
 ```
 
-- Add:
+- Add the following before the line containing `exit 0`:
 
 ```bash
-cd /home/pi/U6143_ssd1306/C
+cd /home/parrisg/U6143_ssd1306/C
 sudo make clean
 sudo make
 sudo ./display &
+```
+
+- Change temperature setting to CELSIUS by editing line 12 in the following file:
+
+```bash
+sudo nano /home/parrisg/U6143_ssd1306/C/ssd1306_i2c.h
 ```
 
 - Reboot:
@@ -128,6 +150,8 @@ sudo reboot
 
 [plone.lucidsolutions.co.nz/hardware/raspberry-pi/3/disable-unwanted-raspbian-services](https://plone.lucidsolutions.co.nz/hardware/raspberry-pi/3/disable-unwanted-raspbian-services)
 
+[https://github.com/UCTRONICS/U6143_ssd1306](https://github.com/UCTRONICS/U6143_ssd1306)
+
 ## More Images
 
 ![Hardware Top View](./images/rack-top.png)
@@ -137,7 +161,7 @@ sudo reboot
 - To get Raspberry PI memory:
 
 ```bash
-  grep MemTotal /proc/meminfo`
+grep MemTotal /proc/meminfo`
 ```
 
 ## Navigation
