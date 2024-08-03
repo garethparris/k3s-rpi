@@ -7,3 +7,8 @@ K3S Build and Configuration with Raspberry PIs
 ## References
 
 ## Notes
+
+## Navigation
+
+- [Next](./?)
+- [Index](./README.md)

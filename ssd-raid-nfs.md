@@ -89,3 +89,8 @@ add this to fstab
 sudo nano /etc/fstab
 UUID=XXX /mnt/raid10/ ext4 defaults,noatime,nofail 0 1
 ```
+
+## Navigation
+
+- [Next](./k3s-install.md)
+- [Index](./README.md)

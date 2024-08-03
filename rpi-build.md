@@ -139,3 +139,8 @@ sudo reboot
 ```bash
   grep MemTotal /proc/meminfo`
 ```
+
+## Navigation
+
+- [Next](./ssd-raid-nfs.md)
+- [Index](./README.md)

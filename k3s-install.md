@@ -95,3 +95,8 @@ You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 ```bash
 /usr/local/bin/k3s-agent-uninstall.sh
 ```
+
+## Navigation
+
+- [Next](./k3s-local-registry.md)
+- [Index](./README.md)
