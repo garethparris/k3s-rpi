@@ -25,37 +25,37 @@ In the final configuration here, the master node is one of the Raspberry PI 4B m
 
 - On the master node, install K3S:
 
-```
+```bash
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --flannel-backend=host-gw --tls-san=192.168.3.10 --bind-address=192.168.3.10 --advertise-address=192.168.3.10 --node-ip=192.168.3.10 --cluster-init" sh -s -
 ```
 
 - Extract the token:
 
-```
+```bash
 sudo cat /var/lib/rancher/k3s/server/node-token
 ```
 
 - On each of the worker nodes, install K3S with the extracted token:
 
-```
+```bash
 curl -sfL https://get.k3s.io | K3S_URL=https://192.168.3.10:6443 K3S_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" sh -
 ```
 
 - On the master node, install `kubectl`:
 
-```
+```bash
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
 ```
 
 - On the master node, copy the `.kube/config` file contents:
 
-```
+```bash
 sudo cat /etc/rancher/k3s/k3s.yaml
 ```
 
 - On Mac OS, install `k3sup` and `k9s` using `brew`:
 
-```
+```bash
 brew install k3sup
 brew install k9s
 ```
@@ -83,3 +83,15 @@ You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster.
 [anthonynsimon.com/blog/kubernetes-cluster-raspberry-pi/#bonus-using-nginx-instead-of-traefik-as-ingress](https://anthonynsimon.com/blog/kubernetes-cluster-raspberry-pi/#bonus-using-nginx-instead-of-traefik-as-ingress)
 
 ## Notes
+
+### K3S kill script
+
+```bash
+/usr/local/bin/k3s-killall.sh
+```
+
+### K3S uninstall script
+
+```bash
+/usr/local/bin/k3s-agent-uninstall.sh
+```

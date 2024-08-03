@@ -35,19 +35,19 @@ The steps below are all executed from Mac OS using Kitty and Terminus.
 
 - Connect to each RPi using SSH:
 
-```
+```bash
 ssh username@192.168.3.xxx
 ```
 
 - Update the Raspberry PI:
 
-```
+```bash
 sudo apt-get update && sudo apt-get upgrade -y
 ```
 
 - Turn off the swapfile:
 
-```
+```bash
 sudo swapoff -a
 sudo nano /etc/dphys-swapfile
 ```
@@ -56,25 +56,25 @@ sudo nano /etc/dphys-swapfile
 
 - Enable cgroup:
 
-```
+```bash
 sudo nano /boot/firmware/cmdline.txt
 ```
 
 - Add:
 
-```
+```bash
 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 ```
 
 - Disable other services:
 
-```
+```bash
 sudo nano /etc/modprobe.d/raspi-blacklist.conf
 ```
 
 - Add:
 
-```
+```bash
 # WiFi
 blacklist brcmfmac
 blacklist brcmutil
@@ -85,7 +85,7 @@ blacklist hci_uart
 
 - Continue disabling services:
 
-```
+```bash
 sudo systemctl disable bluetooth && sudo systemctl stop bluetooth
 sudo systemctl disable avahi-daemon && sudo systemctl stop avahi-daemon
 sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy
@@ -97,13 +97,13 @@ sudo systemctl disable triggerhappy && sudo systemctl stop triggerhappy
 
 - Emable the I2C interface using `raspi-config`:
 
-```
+```bash
 sudo raspi-config
 ```
 
 - Install GIT and pull down the repository:
 
-```
+```bash
 sudo apt-get install git
 git clone https://github.com/UCTRONICS/U6143_ssd1306.git
 sudo nano /etc/rc.local
@@ -111,7 +111,7 @@ sudo nano /etc/rc.local
 
 - Add:
 
-```
+```bash
 cd /home/pi/U6143_ssd1306/C
 sudo make clean
 sudo make
@@ -120,7 +120,7 @@ sudo ./display &
 
 - Reboot:
 
-```
+```bash
 sudo reboot
 ```
 
@@ -136,4 +136,6 @@ sudo reboot
 
 - To get Raspberry PI memory:
 
-  `grep MemTotal /proc/meminfo`
+```bash
+  grep MemTotal /proc/meminfo`
+```
