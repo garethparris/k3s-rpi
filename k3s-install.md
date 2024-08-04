@@ -1,6 +1,6 @@
 # K3S Installation
 
-K3S Build and Configuration with Raspberry PIs
+This document describes how to install K3S on several Raspberry Pi 4s and 3s to form a cluster.
 
 ## Kubernetes
 
@@ -35,7 +35,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --flan
 sudo cat /var/lib/rancher/k3s/server/node-token
 ```
 
-- On each of the worker nodes, install K3S with the extracted token:
+- On each of the worker nodes, install K3S with the extracted token (replace `xxx` with the token):
 
 ```bash
 curl -sfL https://get.k3s.io | K3S_URL=https://192.168.3.10:6443 K3S_TOKEN="xxx" sh -
@@ -66,7 +66,7 @@ brew install k9s
 - On Mac OS, paste the `.kube/config` file from the master node contents to: `~/.kube/local.yaml`. You can now run `kubectl` or `k9s` from the Mac to query and manage the cluster:
 
 ```bash
-export KUBECONFIG=~/.kube/local.yaml 
+export KUBECONFIG=~/.kube/local.yaml
 ```
 
 ```bash
@@ -95,6 +95,18 @@ kubectl get nodes
 
 ### K3S kill script
 
+### K3S restart server service
+
+```bash
+sudo systemctl restart k3s
+```
+
+### K3S restart agent service
+
+```bash
+systemctl restart k3s-agent
+```
+
 ```bash
 /usr/local/bin/k3s-killall.sh
 ```
@@ -107,5 +119,5 @@ kubectl get nodes
 
 ## Navigation
 
-- [Next](./k3s-local-registry.md)
+- [Next](./k3s-registry.md)
 - [Index](./README.md)

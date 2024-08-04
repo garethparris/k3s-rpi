@@ -1,6 +1,6 @@
 # Raspberry Pi Hardware Build
 
-K3S Build and Configuration with Raspberry PIs
+This document describes how to build several Raspberry Pi 4s and 3s in headless mode in preparation for building them into a Kubernetes cluster.
 
 ## Hardware
 

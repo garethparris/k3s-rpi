@@ -1,6 +1,6 @@
 # SSD, RAID 10 and NFS Setup
 
-This document describes how to use several USB3 SSDs to create a RAID 10 array that can be accessed via NFS.
+This document describes how to connect four USB SSDs to a Raspberry Pi using a powered USB3 hub and how to create a RAID 10 array that can be accessed via NFS.
 
 ## Hardware
 
@@ -44,7 +44,7 @@ sudo ./mega4/mega4.sh
 ## SSD Setup
 
 - Connect your SSDs to the powered USB hub:
-  
+
 ![MEGA4](./images/mega4-ssds.png)
 
 - Ensure all the connected USB drives are wiped with no partitions. Execute `fdisk` for each drive e.g. `sda`, `sdb`, `sdc`, `sdd`
@@ -54,7 +54,7 @@ sudo fdisk /dev/sda
 ```
 
 - Enter:
-  
+
 1. `d` - delete all partitions
 2. `n` - create new partitions
 3. `p` - primary partition
@@ -75,14 +75,14 @@ lsblk
 
 ```console
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-sda      8:0    0 476.9G  0 disk 
-└─sda1   8:1    0   238G  0 part 
-sdb      8:16   0 465.8G  0 disk 
-└─sdb1   8:17   0   238G  0 part 
-sdc      8:32   0 238.5G  0 disk 
-└─sdc1   8:33   0   238G  0 part 
-sdd      8:48   0 238.5G  0 disk 
-└─sdd1   8:49   0   238G  0 part 
+sda      8:0    0 476.9G  0 disk
+└─sda1   8:1    0   238G  0 part
+sdb      8:16   0 465.8G  0 disk
+└─sdb1   8:17   0   238G  0 part
+sdc      8:32   0 238.5G  0 disk
+└─sdc1   8:33   0   238G  0 part
+sdd      8:48   0 238.5G  0 disk
+└─sdd1   8:49   0   238G  0 part
 ```
 
 ## RAID 10 Setup
@@ -94,7 +94,7 @@ sudo apt install mdadm -y
 ```
 
 - Create RAID 10 array using all 4 drives:
-  
+
 ```bash
 sudo mdadm --create --verbose /dev/md0 --level=10 --raid-devices=4 /dev/sd[a-d]1
 ```
@@ -118,7 +118,7 @@ cat /proc/mdstat
 ```
 
 ```console
-Personalities : [raid10] 
+Personalities : [raid10]
 md0 : active raid10 sdd1[3] sdc1[2] sdb1[1] sda1[0]
       498857984 blocks super 1.2 512K chunks 2 near-copies [4/4] [UUUU]
       [===================>.]  resync = 99.4% (495911552/498857984) finish=0.3min speed=139110K/sec
@@ -146,7 +146,7 @@ sudo mdadm --detail /dev/md0
      Intent Bitmap : Internal
 
        Update Time : Sat Aug  3 15:46:38 2024
-             State : clean 
+             State : clean
     Active Devices : 4
    Working Devices : 4
     Failed Devices : 0
@@ -175,7 +175,7 @@ sudo mkdir /mnt/nfs
 ```
 
 - Format the array with `ext4` format:
-  
+
 ```bash
 sudo mkfs.ext4 /dev/md0
 ```
@@ -194,25 +194,25 @@ lsblk
 
 ```console
 NAME      MAJ:MIN RM   SIZE RO TYPE   MOUNTPOINTS
-sda         8:0    1     0B  0 disk   
-sdb         8:16   1     0B  0 disk   
-sdc         8:32   1     0B  0 disk   
-sdd         8:48   1     0B  0 disk   
-sde         8:64   1  58.9G  0 disk   
+sda         8:0    1     0B  0 disk
+sdb         8:16   1     0B  0 disk
+sdc         8:32   1     0B  0 disk
+sdd         8:48   1     0B  0 disk
+sde         8:64   1  58.9G  0 disk
 ├─sde1      8:65   1   512M  0 part   /boot/firmware
 └─sde2      8:66   1  58.4G  0 part   /
-sdf         8:80   0 476.9G  0 disk   
-└─sdf1      8:81   0   238G  0 part   
-  └─md127   9:127  0 475.7G  0 raid10 
-sdg         8:96   0 465.8G  0 disk   
-└─sdg1      8:97   0   238G  0 part   
-  └─md127   9:127  0 475.7G  0 raid10 
-sdh         8:112  0 238.5G  0 disk   
-└─sdh1      8:113  0   238G  0 part   
-  └─md127   9:127  0 475.7G  0 raid10 
-sdi         8:128  0 238.5G  0 disk   
-└─sdi1      8:129  0   238G  0 part   
-  └─md127   9:127  0 475.7G  0 raid10 
+sdf         8:80   0 476.9G  0 disk
+└─sdf1      8:81   0   238G  0 part
+  └─md127   9:127  0 475.7G  0 raid10
+sdg         8:96   0 465.8G  0 disk
+└─sdg1      8:97   0   238G  0 part
+  └─md127   9:127  0 475.7G  0 raid10
+sdh         8:112  0 238.5G  0 disk
+└─sdh1      8:113  0   238G  0 part
+  └─md127   9:127  0 475.7G  0 raid10
+sdi         8:128  0 238.5G  0 disk
+└─sdi1      8:129  0   238G  0 part
+  └─md127   9:127  0 475.7G  0 raid10
 ```
 
 Note how the RAID identifier has changed from `md0` to `md127`.
@@ -280,7 +280,7 @@ echo "Hello World" | sudo tee /mnt/nfs/everyone/hi_there.txt
 ```
 
 - Setup the NFS exports file:
-  
+
 ```bash
 sudo nano /etc/exports
 ```
@@ -309,7 +309,7 @@ Hello World
 
 - Test writes:
 
- ```bash
+```bash
 echo "test" > /mnt/test.txt
 ```
 
