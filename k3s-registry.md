@@ -4,7 +4,7 @@ This document describes how to create a K3S private registry that can be pushed 
 
 ## Setup Private Registry
 
-- Create a `registry.yaml` file:
+- Create a [registry.yaml](./scripts/registry.yaml) file:
 
 ```yaml
 apiVersion: v1
@@ -83,7 +83,7 @@ mirrors:
 sudo mkdir /etc/rancher/k3s
 ```
 
-- Create the `registry.yaml` file:
+- Create the `registries.yaml` file:
 
 ```bash
 sudo nano /etc/rancher/k3s/registries.yaml
@@ -131,9 +131,9 @@ sudo systemctl restart k3s
 
 ![Desker Desktop Private Registry](./images/docker-desktop-private-registry.png)
 
-## Test Pushing from Docker Desktop to Cluster
+## Test Push from Docker Desktop to Private Registry
 
-- When Docker Desktop has restarted, find a local image to push to the cluster:
+- When Docker Desktop has restarted, find a local container image to push to the cluster:
 
 ```bash
 docker images
@@ -162,7 +162,7 @@ docker tag 81bebf4de0fd rpi-master:5000/go-api:v1
 docker push rpi-master:5000/go-api:v1
 ```
 
-- Create a simple manifest to crete 10 replicas with a service:
+- Create a simple manifest to generate 10 replicas with a service [go-api.yaml](./scripts/go-api.yaml):
 
 ```yaml
 apiVersion: v1
@@ -204,7 +204,7 @@ spec:
   type: LoadBalancer
 ```
 
-Note the container reference explicitly states the K3S private repository `pi-master:5000/go-api:v1`.
+Note the container image explicitly states the K3S private repository `image: pi-master:5000/go-api:v1`.
 
 - Apply it to the cluster:
 
