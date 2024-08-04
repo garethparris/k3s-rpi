@@ -241,7 +241,9 @@ kubectl delete -f go-api.yaml
 ## References
 
 [Adding a Private Docker Registry to your RPi Kubernetes Cluster](https://medium.com/@chris.allmark/adding-a-private-docker-registry-to-your-rpi-kubernetes-cluster-3b549cc33c4f)
+
 [How to Use Your Own Registry with Docker Desktop](https://www.docker.com/blog/how-to-use-your-own-registry-2/)
+
 [Private Registry Configuration](https://docs.k3s.io/installation/private-registry)
 
 ## Notes

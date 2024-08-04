@@ -322,7 +322,9 @@ sudo reboot
 ## References
 
 [https://www.uugear.com/product/mega4-4-port-usb-3-ppps-hub-for-raspberry-pi-4b/](https://www.uugear.com/product/mega4-4-port-usb-3-ppps-hub-for-raspberry-pi-4b/)
+
 [MEGA4 User Manual](https://www.uugear.com/doc/MEGA4_UserManual.pdf)
+
 [https://www.youtube.com/watch?v=EzqgJhu-qN8](https://www.youtube.com/watch?v=EzqgJhu-qN8)
 
 ## Notes
