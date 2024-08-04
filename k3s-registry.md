@@ -106,7 +106,7 @@ sudo systemctl restart k3s
 
 ## Configure Desktop Docker
 
-- Add the private registry details to Docker Desktop under `Settings/Docker Engine' in this format:
+- Add the private registry details to Docker Desktop under `Settings/Docker Engine` in this format:
 
 ```json
 "insecure-registries": ["<hostname>:5000"]
@@ -133,7 +133,7 @@ sudo systemctl restart k3s
 
 ## Test Pushing from Docker Desktop to Cluster
 
-- Find a local image to push to the cluster:
+- When Docker Desktop has restarted, find a local image to push to the cluster:
 
 ```bash
 docker images
@@ -232,7 +232,7 @@ go-api-ngkvn   1/1     Running   0          5m10s   10.42.3.13   rpi-worker-03  
 go-api-nxjrq   1/1     Running   0          5m10s   10.42.4.12   rpi-worker-04   <none>           <none>
 ```
 
-- Remove it from the cluster:
+- Tidy up by removing it from the cluster:
 
 ```bash
 kubectl delete -f go-api.yaml
@@ -242,10 +242,11 @@ kubectl delete -f go-api.yaml
 
 [Adding a Private Docker Registry to your RPi Kubernetes Cluster](https://medium.com/@chris.allmark/adding-a-private-docker-registry-to-your-rpi-kubernetes-cluster-3b549cc33c4f)
 [How to Use Your Own Registry with Docker Desktop](https://www.docker.com/blog/how-to-use-your-own-registry-2/)
+[Private Registry Configuration](https://docs.k3s.io/installation/private-registry)
 
 ## Notes
 
 ## Navigation
 
-- [Next](./?)
+- [Next](./k3s-pvc-nfs.md)
 - [Index](./README.md)
