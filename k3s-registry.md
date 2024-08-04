@@ -4,7 +4,7 @@ This document describes how to create a K3S private registry that can be pushed 
 
 ## Setup Private Registry
 
-- Create `registry.yaml` file:
+- Create a `registry.yaml` file:
 
 ```yaml
 apiVersion: v1
@@ -104,11 +104,30 @@ mirrors:
 sudo systemctl restart k3s
 ```
 
-## Configure local Desktop Docker
+## Configure Desktop Docker
 
-Finally, configure your local Docker client by adding:
+- Add the private registry details to Docker Desktop under `Settings/Docker Engine' in this format:
 
+```json
 "insecure-registries": ["<hostname>:5000"]
+```
+
+- It should look something like this:
+
+```json
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false,
+  "insecure-registries": ["rpi-master:5000"]
+}
+```
+
+- Restart Docker Desktop
 
 ![Desker Desktop Private Registry](./images/docker-desktop-private-registry.png)
 
@@ -125,7 +144,7 @@ REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
 go-api                   v1        81bebf4de0fd   20 minutes ago   16.5MB
 ```
 
-- Login to K3S private repository:
+- Login to the K3S private repository:
 
 ```bash
 docker login rpi-master:5000
@@ -133,9 +152,9 @@ docker login rpi-master:5000
 
 - Tag the image:
 
-````bash
-docker tag 81bebf4de0fd rpi-master:5000/go-api:v1```
-````
+```bash
+docker tag 81bebf4de0fd rpi-master:5000/go-api:v1
+```
 
 - Push to the private repository:
 
@@ -143,7 +162,7 @@ docker tag 81bebf4de0fd rpi-master:5000/go-api:v1```
 docker push rpi-master:5000/go-api:v1
 ```
 
-- Create a simple manifest with replication controller and service:
+- Create a simple manifest to crete 10 replicas with a service:
 
 ```yaml
 apiVersion: v1
@@ -185,7 +204,7 @@ spec:
   type: LoadBalancer
 ```
 
-Note the container reference explicitly state the K3S private repository.
+Note the container reference explicitly states the K3S private repository `pi-master:5000/go-api:v1`.
 
 - Apply it to the cluster:
 
@@ -196,21 +215,21 @@ kubectl apply -f go-api.yaml
 - Check the results:
 
 ```bash
-kubectl get pods
+kubectl get pods -o wide
 ```
 
 ```console
-NAME           READY   STATUS    RESTARTS   AGE
-go-api-2bdqq   1/1     Running   0          20s
-go-api-2k7j9   1/1     Running   0          20s
-go-api-7br2g   1/1     Running   0          20s
-go-api-94jz2   1/1     Running   0          20s
-go-api-999wk   1/1     Running   0          20s
-go-api-dtwgj   1/1     Running   0          20s
-go-api-fws4l   1/1     Running   0          20s
-go-api-lmgv6   1/1     Running   0          20s
-go-api-lxppk   1/1     Running   0          20s
-go-api-vrn7s   1/1     Running   0          20s
+NAME           READY   STATUS    RESTARTS   AGE     IP           NODE            NOMINATED NODE   READINESS GATES
+go-api-4prcb   1/1     Running   0          5m10s   10.42.2.15   rpi-worker-02   <none>           <none>
+go-api-96dvr   1/1     Running   0          5m10s   10.42.2.16   rpi-worker-02   <none>           <none>
+go-api-df745   1/1     Running   0          5m10s   10.42.1.11   rpi-worker-01   <none>           <none>
+go-api-jblvk   1/1     Running   0          5m10s   10.42.1.10   rpi-worker-01   <none>           <none>
+go-api-jkxvg   1/1     Running   0          5m10s   10.42.3.14   rpi-worker-03   <none>           <none>
+go-api-k696j   1/1     Running   0          5m10s   10.42.0.55   rpi-master      <none>           <none>
+go-api-lfpdl   1/1     Running   0          5m10s   10.42.4.11   rpi-worker-04   <none>           <none>
+go-api-llnpr   1/1     Running   0          5m10s   10.42.0.54   rpi-master      <none>           <none>
+go-api-ngkvn   1/1     Running   0          5m10s   10.42.3.13   rpi-worker-03   <none>           <none>
+go-api-nxjrq   1/1     Running   0          5m10s   10.42.4.12   rpi-worker-04   <none>           <none>
 ```
 
 - Remove it from the cluster:
