@@ -13,8 +13,8 @@ spec:
     server: 192.168.3.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
     name: kube-registry-pvc
+    namespace: kube-system
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,4 +27,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  

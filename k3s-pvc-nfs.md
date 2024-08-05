@@ -1,9 +1,8 @@
 # K3S Persistent Storage Setup
 
-This document describes how store the K3S private registry we created earlier onto our NFS server and us
-will be stored on the SD card. In a later chapter we will move this to our NFS server.
+This document describes how store the K3S private registry we created earlier on our NFS server instead of on the local SD card. It creates a Persistent Volume (PV) and Persistent Volume Claim (PVC) in K3S.
 
-## TBC
+## Create and Export NFS folder
 
 ```bash
 sudo mkdir -p /mnt/nfs/registry
@@ -14,22 +13,35 @@ sudo chown -R parrisg /mnt/nfs/registry
 ```
 
 ```bash
-sudo nano /etc/exports 
+sudo nano /etc/exports
 ```
 
 ```console
 /mnt/nfs/registry 192.168.3.0/27(rw,sync,no_subtree_check,no_root_squash)
 ```
 
-no_root_squash, because many of the docker images we use run as root in the container. Without this, those images will not be able to write to the file system
+Use a network subnet address in CIDR format to limit access to these exports to the cluster only.
 
-using CIDR format here to limit access to these exports to the IPs our cluster Pis use.
+`sync` means the server replies to requests only after the changes have been committed to stable storage.
+
+`no_subtree_check` disables subtree checking and improves reliability in some circumstances.
+
+`no_root_squash` is used because many of the docker images we use run as root in the container. Without this, those images will not be able to write to the file system.
+
+- Reload the NFS server:
+
+```bash
+sudo exportfs -ar
+```
+
+- Create a persistent volume and persistent volume claim [registry-pv.yaml](./scripts/registry-pv.yaml):
 
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: registry-pv
+  name: kube-registry-pv
+  namespace: kube-system
 spec:
   capacity:
     storage: 1Gi
@@ -40,16 +52,14 @@ spec:
     server: 192.168.3.10
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-    namespace: default
-    name: registry-pvc
+    name: kube-registry-pvc
+    namespace: kube-system
 ---
-```
-
-```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: docker-registry-pvc
+  name: kube-registry-pvc
+  namespace: kube-system
 spec:
   accessModes:
     - ReadWriteOnce
@@ -58,9 +68,74 @@ spec:
       storage: 1Gi
 ```
 
+## Setup Private Registry
 
+- Create a deployment and service [registry.yaml](./scripts/registry-on-pv.yaml):
 
-sudo exportfs -ar
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    app: kube-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-registry
+  template:
+    metadata:
+      labels:
+        app: kube-registry
+    spec:
+      containers:
+        - name: registry
+          image: registry:2
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REGISTRY_AUTH
+              value: htpasswd
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: Kube Registry
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: /auth/htpasswd
+            - name: REGISTRY_STORAGE_DELETE_ENABLED
+              value: "true"
+          volumeMounts:
+            - name: storage
+              mountPath: /mnt/nfs/registry
+            - name: htpasswd
+              mountPath: /auth
+              readOnly: true
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: kube-registry-pvc
+        - name: htpasswd
+          secret:
+            secretName: kube-registry-htpasswd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-registry-service
+  namespace: kube-system
+spec:
+  selector:
+    app: kube-registry
+  ports:
+    - protocol: TCP
+      port: 5000
+```
 
 ## References
 

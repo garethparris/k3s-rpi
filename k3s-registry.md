@@ -27,12 +27,12 @@ sudo kubectl create secret generic kube-registry-htpasswd --from-file ./htpasswd
 - Optionally, delete the local `htpasswd` file:
 
 ```bash
-rm htpasswd 
+rm htpasswd
 ```
 
 ## Setup Private Registry
 
-- Create a [registry.yaml](./scripts/registry-on-sdcard.yaml) file:
+- Create a deployment and service [registry.yaml](./scripts/registry-on-sdcard.yaml):
 
 ```yaml
 apiVersion: apps/v1
@@ -202,18 +202,20 @@ docker push rpi-master:5000/go-api:v1
 - Create a simple manifest to generate 10 replicas with a service [go-api.yaml](./scripts/go-api.yaml):
 
 ```yaml
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: go-api
   namespace: default
+  labels:
+    app: go-api
 spec:
   replicas: 10
   selector:
-    app: go-api
+    matchLabels:
+      app: go-api
   template:
     metadata:
-      name: go-api
       labels:
         app: go-api
     spec:
@@ -230,15 +232,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: go-api
+  name: go-api-service
   namespace: default
 spec:
   selector:
     app: go-api
   ports:
-    - port: 9001
-      targetPort: 80
-  type: LoadBalancer
+    - protocol: TCP
+      port: 9001
 ```
 
 Note the container image explicitly states the K3S private repository `image: pi-master:5000/go-api:v1`.
@@ -256,17 +257,17 @@ kubectl get pods -o wide
 ```
 
 ```console
-NAME           READY   STATUS    RESTARTS   AGE     IP           NODE            NOMINATED NODE   READINESS GATES
-go-api-4prcb   1/1     Running   0          5m10s   10.42.2.15   rpi-worker-02   <none>           <none>
-go-api-96dvr   1/1     Running   0          5m10s   10.42.2.16   rpi-worker-02   <none>           <none>
-go-api-df745   1/1     Running   0          5m10s   10.42.1.11   rpi-worker-01   <none>           <none>
-go-api-jblvk   1/1     Running   0          5m10s   10.42.1.10   rpi-worker-01   <none>           <none>
-go-api-jkxvg   1/1     Running   0          5m10s   10.42.3.14   rpi-worker-03   <none>           <none>
-go-api-k696j   1/1     Running   0          5m10s   10.42.0.55   rpi-master      <none>           <none>
-go-api-lfpdl   1/1     Running   0          5m10s   10.42.4.11   rpi-worker-04   <none>           <none>
-go-api-llnpr   1/1     Running   0          5m10s   10.42.0.54   rpi-master      <none>           <none>
-go-api-ngkvn   1/1     Running   0          5m10s   10.42.3.13   rpi-worker-03   <none>           <none>
-go-api-nxjrq   1/1     Running   0          5m10s   10.42.4.12   rpi-worker-04   <none>           <none>
+NAME           READY   STATUS    RESTARTS   AGE     IP           NODE
+go-api-4prcb   1/1     Running   0          5m10s   10.42.2.15   rpi-worker-02
+go-api-96dvr   1/1     Running   0          5m10s   10.42.2.16   rpi-worker-02
+go-api-df745   1/1     Running   0          5m10s   10.42.1.11   rpi-worker-01
+go-api-jblvk   1/1     Running   0          5m10s   10.42.1.10   rpi-worker-01
+go-api-jkxvg   1/1     Running   0          5m10s   10.42.3.14   rpi-worker-03
+go-api-k696j   1/1     Running   0          5m10s   10.42.0.55   rpi-master
+go-api-lfpdl   1/1     Running   0          5m10s   10.42.4.11   rpi-worker-04
+go-api-llnpr   1/1     Running   0          5m10s   10.42.0.54   rpi-master
+go-api-ngkvn   1/1     Running   0          5m10s   10.42.3.13   rpi-worker-03
+go-api-nxjrq   1/1     Running   0          5m10s   10.42.4.12   rpi-worker-04
 ```
 
 - Tidy up by removing it from the cluster:
