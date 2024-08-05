@@ -1,24 +1,54 @@
 # K3S Private Registry Setup
 
-This document describes how to create a K3S private registry that can be pushed to from a local Docker Desktop.
+This document describes how to create a K3S private registry that can be pushed to from a local Docker Desktop. This private registry will be stored on the SD card. In a later chapter we will move this to our NFS server.
+
+## Create Credentials to store in K3S
+
+- We need to create a `htpasswd` file to store a username and password, and store it in K3S secrets.
+
+- Install `apache2-utils`:
+
+```bash
+sudo apt install -y apache2-utils
+```
+
+- Create a `htpasswd` file for a specific user:
+
+```bash
+htpasswd -Bc htpasswd parrisg
+```
+
+- Store the `htpasswd` file as secret in K3S:
+
+```bash
+sudo kubectl create secret generic kube-registry-htpasswd --from-file ./htpasswd -n kube-system
+```
+
+- Optionally, delete the local `htpasswd` file:
+
+```bash
+rm htpasswd 
+```
 
 ## Setup Private Registry
 
-- Create a [registry.yaml](./scripts/registry.yaml) file:
+- Create a [registry.yaml](./scripts/registry-on-sdcard.yaml) file:
 
 ```yaml
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: kube-registry
   namespace: kube-system
+  labels:
+    app: kube-registry
 spec:
   replicas: 1
   selector:
-    app: kube-registry
+    matchLabels:
+      app: kube-registry
   template:
     metadata:
-      name: kube-registry
       labels:
         app: kube-registry
     spec:
@@ -29,37 +59,44 @@ spec:
             limits:
               cpu: 100m
               memory: 200Mi
+          ports:
+            - containerPort: 5000
           env:
-            - name: REGISTRY_HTTP_ADDR
-              value: :5000
-            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
-              value: /var/lib/registry
+            - name: REGISTRY_AUTH
+              value: htpasswd
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: Kube Registry
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: /auth/htpasswd
             - name: REGISTRY_STORAGE_DELETE_ENABLED
               value: "true"
           volumeMounts:
-            - name: registry
+            - name: storage
               mountPath: /var/lib/registry
-          ports:
-            - containerPort: 5000
+            - name: htpasswd
+              mountPath: /auth
+              readOnly: true
       nodeSelector:
         node-role.kubernetes.io/master: "true"
       volumes:
-        - name: registry
+        - name: storage
           hostPath:
             path: /var/lib/registry
+        - name: htpasswd
+          secret:
+            secretName: kube-registry-htpasswd
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kube-registry
+  name: kube-registry-service
   namespace: kube-system
 spec:
   selector:
     app: kube-registry
   ports:
-    - port: 5000
-      targetPort: 5000
-  type: LoadBalancer
+    - protocol: TCP
+      port: 5000
 ```
 
 - Apply to the cluster:
@@ -144,7 +181,7 @@ REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
 go-api                   v1        81bebf4de0fd   20 minutes ago   16.5MB
 ```
 
-- Login to the K3S private repository:
+- Login to the K3S private repository, using the credentials you created for `htpasswd` above:
 
 ```bash
 docker login rpi-master:5000
@@ -247,6 +284,18 @@ kubectl delete -f go-api.yaml
 [Private Registry Configuration](https://docs.k3s.io/installation/private-registry)
 
 ## Notes
+
+### Delete secret from K3S
+
+```bash
+sudo kubectl delete secret kube-registry-htpasswd -n kube-system
+```
+
+### Logout of registry
+
+```bash
+docker logout rpi-master:5000
+```
 
 ## Navigation
 

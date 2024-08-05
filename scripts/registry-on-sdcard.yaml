@@ -1,15 +1,17 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: kube-registry
   namespace: kube-system
+  labels:
+    app: kube-registry
 spec:
   replicas: 1
   selector:
-    app: kube-registry
+    matchLabels:
+      app: kube-registry
   template:
     metadata:
-      name: kube-registry
       labels:
         app: kube-registry
     spec:
@@ -20,34 +22,41 @@ spec:
             limits:
               cpu: 100m
               memory: 200Mi
+          ports:
+            - containerPort: 5000
           env:
-            - name: REGISTRY_HTTP_ADDR
-              value: :5000
-            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
-              value: /var/lib/registry
+            - name: REGISTRY_AUTH
+              value: htpasswd
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: Kube Registry
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: /auth/htpasswd
             - name: REGISTRY_STORAGE_DELETE_ENABLED
               value: "true"
           volumeMounts:
-            - name: registry
+            - name: storage
               mountPath: /var/lib/registry
-          ports:
-            - containerPort: 5000
+            - name: htpasswd
+              mountPath: /auth
+              readOnly: true
       nodeSelector:
         node-role.kubernetes.io/master: "true"
       volumes:
-        - name: registry
+        - name: storage
           hostPath:
             path: /var/lib/registry
+        - name: htpasswd
+          secret:
+            secretName: kube-registry-htpasswd
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kube-registry
+  name: kube-registry-service
   namespace: kube-system
 spec:
   selector:
     app: kube-registry
   ports:
-    - port: 5000
-      targetPort: 5000
-  type: LoadBalancer
+    - protocol: TCP
+      port: 5000

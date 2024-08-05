@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    app: kube-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-registry
+  template:
+    metadata:
+      labels:
+        app: kube-registry
+    spec:
+      containers:
+        - name: registry
+          image: registry:2
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REGISTRY_AUTH
+              value: htpasswd
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: Kube Registry
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: /auth/htpasswd
+            - name: REGISTRY_STORAGE_DELETE_ENABLED
+              value: "true"
+          volumeMounts:
+            - name: storage
+              mountPath: /mnt/nfs/registry
+            - name: htpasswd
+              mountPath: /auth
+              readOnly: true
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: kube-registry-pvc
+        - name: htpasswd
+          secret:
+            secretName: kube-registry-htpasswd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-registry-service
+  namespace: kube-system
+spec:
+  selector:
+    app: kube-registry
+  ports:
+    - protocol: TCP
+      port: 5000
