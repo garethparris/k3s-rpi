@@ -21,17 +21,43 @@ Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
 ![Ubiquity Switch Lite 16 PoE](./images/unifi-switch.png)
 
-## Initial Setup
+## Network Setup
 
 The steps below are all executed from Mac OS using Kitty and Terminus.
 
-- Download [Raspberry PI Imager](https://www.raspberrypi.com/software/)
-- Download latest [64-bit Raspberry PI OS Lite](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64-lite.img.xz)
-- Install the OS on each SD card using the imager. I created a profile to allow SSH access, set a username and password, and set the localisation.
 - I am using DHCP to allocate each device with a fixed IP address in a dedicated development network (`192.168.3.0/27`) created in the Ubiquity Network management interface.
   ![Device Network Settings](./images/unifi-nodes.png)
 
+- Alternatively, if you need to set a fixed IP on your Raspberry Pi you will need to modify `dhcp.conf` after your have booted your device for the first time:
+
+```bash
+sudo nano /etc/dhcpcd.conf
+```
+
+- Add these lines with the appropriate settings for your network setup:
+
+```bash
+interface [interface-name]
+static ip_address=[ip-address]/[cidr-suffix]
+static routers=[router-ip-address]
+static domain_name_servers=[dns-address]
+```
+
+- Then reboot your Raspberry Pi:
+
+```bash
+sudo reboot
+```
+
 ## Raspberry PI Setup
+
+- Using the Raspberry Pi Imager application:
+- - For device select `Raspberry Pi 4`
+- - For operating system select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)`
+- - Insert your SD card into the appropriate slot
+- - Create a profile to allow SSH access, set a username and password, and set the localisation
+- - Select Next and write to the card
+- - Repeat for each SD card
 
 - Connect to each RPi using SSH:
 

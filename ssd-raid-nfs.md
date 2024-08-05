@@ -56,7 +56,7 @@ sudo fdisk /dev/sda
 - Enter:
 
 1. `d` - delete all partitions
-2. `n` - create new partitions
+2. `n` - create new partition
 3. `p` - primary partition
 4. `1` - partition 1
 5. `2048` - first sector
@@ -245,7 +245,9 @@ blkid
 sudo nano /etc/fstab
 ```
 
-Add `UUID=0a519d22-8c0e-4903-92c0-2de082485898 /mnt/nfs ext4 defaults,noatime,nofail 0 2`
+```console
+UUID=0a519d22-8c0e-4903-92c0-2de082485898 /mnt/nfs ext4 defaults,noatime,nofail 0 2
+```
 
 The `nofail` option tells the system to ignore any errors on mounting and to continue booting even if the device cannot be mounted properly.
 
@@ -293,11 +295,15 @@ Add the following `/mnt/nfs/everyone *(rw,sync,no_subtree_check)` to allow every
 sudo exportfs -ar
 ```
 
-- Test from anothter Raspberry Pi:
+## Test the NFS Server allows reads and write
+
+- Boot into another Raspberry Pi on the same network and mount a NFS folder:
 
 ```bash
 sudo mount -t nfs 192.168.3.10:/mnt/nfs/everyone /mnt
 ```
+
+- Test reading:
 
 ```bash
 cat /mnt/hi_there.txt
@@ -307,16 +313,10 @@ cat /mnt/hi_there.txt
 Hello World
 ```
 
-- Test writes:
+- Test writing:
 
 ```bash
 echo "test" > /mnt/test.txt
-```
-
-- Reboot, and retest connectivity and access:
-
-```bash
-sudo reboot
 ```
 
 ## References

@@ -93,8 +93,6 @@ kubectl get nodes
 
 ## Notes
 
-### K3S kill script
-
 ### K3S restart server service
 
 ```bash
@@ -106,6 +104,8 @@ sudo systemctl restart k3s
 ```bash
 systemctl restart k3s-agent
 ```
+
+### K3S kill script
 
 ```bash
 /usr/local/bin/k3s-killall.sh
