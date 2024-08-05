@@ -52,12 +52,12 @@ sudo reboot
 ## Raspberry PI Setup
 
 - Using the Raspberry Pi Imager application:
-- - For device select `Raspberry Pi 4`
-- - For operating system select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)`
-- - Insert your SD card into the appropriate slot
-- - Create a profile to allow SSH access, set a username and password, and set the localisation
-- - Select Next and write to the card
-- - Repeat for each SD card
+  - For device select `Raspberry Pi 4`
+  - For operating system select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)`
+  - Insert your SD card into the appropriate slot
+  - Create a profile to allow SSH access, set a username and password, and set the localisation
+  - Select Next and write to the card
+  - Repeat for each SD card
 
 - Connect to each RPi using SSH:
 
