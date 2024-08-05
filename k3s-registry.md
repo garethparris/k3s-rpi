@@ -98,10 +98,10 @@ mirrors:
       - "http://192.168.3.10:5000"
 ```
 
-- Restart the cluster:
+- Reboot:
 
 ```bash
-sudo systemctl restart k3s
+sudo reboot
 ```
 
 ## Configure Desktop Docker

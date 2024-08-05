@@ -6,16 +6,16 @@ This document describes how to build several Raspberry Pi 4s and 3s in headless 
 
 I am using the following hardware:
 
-- 2x Raspberry PI Model 4B with 4GB RAM using a PoE hat
-- 2x Raspberry PI Model 4B with 8GB RAM using a PoE hat
-- 1x Raspberry PI Model 3B+ with 1GB RAM using a PoE hat
-- 1x Raspberry PI Model 3B with 1GB RAM using power adapter
+- 2x Raspberry Pi Model 4B with 4GB RAM using a PoE hat
+- 2x Raspberry Pi Model 4B with 8GB RAM using a PoE hat
+- 1x Raspberry Pi Model 3B+ with 1GB RAM using a PoE hat
+- 1x Raspberry Pi Model 3B with 1GB RAM using power adapter
 
-On the Raspberry PI 4B models I am using a 64GB SD card connected via a USB 3.0 SD Card reader instead of the built-in SD card slot for increased data transfer speed.
+On the Raspberry Pi 4B models I am using a 64GB SD card connected via a USB 3.0 SD Card reader instead of the built-in SD card slot for increased data transfer speed.
 
 ![Hardware Front View](./images/rack-front.png)
 
-In all Raspberry PI models I am using a 64GB SD card, either via an external USB3 card reader, or in the PIs SD card slot.
+In all Raspberry Pi models I am using a 64GB SD card, either via an external USB3 card reader, or in the SD card slot.
 
 Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
@@ -49,7 +49,7 @@ static domain_name_servers=[dns-address]
 sudo reboot
 ```
 
-## Raspberry PI Setup
+## Raspberry Pi Setup
 
 - Using the Raspberry Pi Imager application:
   - For device select `Raspberry Pi 4`
@@ -59,13 +59,15 @@ sudo reboot
   - Select Next and write to the card
   - Repeat for each SD card
 
-- Connect to each RPi using SSH:
+- Insert the SD card into the Raspberry Pi and let it boot up
+  
+- Then connect to each RPi using SSH:
 
 ```bash
 ssh username@192.168.3.xxx
 ```
 
-- Update the Raspberry PI:
+- Update the Raspberry Pi:
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -184,7 +186,7 @@ sudo reboot
 
 ## Notes
 
-- To get Raspberry PI memory:
+- To get Raspberry Pi memory:
 
 ```bash
 grep MemTotal /proc/meminfo`

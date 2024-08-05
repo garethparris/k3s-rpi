@@ -15,9 +15,9 @@ Alternatives considered were:
 - [Kind](https://github.com/kubernetes-sigs/kind)
 - [MiniCube](https://kubernetes.io/docs/tutorials/hello-minikube/)
 
-Initially, I used the Raspberry PI 3B+ as the control plane but as soon as I had built the cluster and started querying the API with `kubectl` and `K9S` it became apparent that the 3B+ was lagging considerably and not able to cope.
+Initially, I used the Raspberry Pi 3B+ as the control plane but as soon as I had built the cluster and started querying the API with `kubectl` and `K9S` it became apparent that the 3B+ was lagging considerably and not able to cope.
 
-In the final configuration here, the master node is one of the Raspberry PI 4B models with 4GB RAM.
+In the final configuration here, the master node is one of the Raspberry Pi 4B models with 4GB RAM.
 
 ![k9s nodes](./images/k9s-nodes.png)
 

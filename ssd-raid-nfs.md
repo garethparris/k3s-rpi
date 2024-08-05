@@ -12,7 +12,7 @@ The MEGA4 is also a powered hub and you can connect a 5V power supply to its USB
 
 ### No Back-Power
 
-Back-power (or back feeding power) here means the USB hub provides electronic power to Raspberry Pi. The Raspberry PI 4B does not like back feeding power, and the MEGA4 does not support back-power unlike many other USB3 hubs.
+Back-power (or back feeding power) here means the USB hub provides electronic power to Raspberry Pi. The Raspberry Pi 4B does not like back feeding power, and the MEGA4 does not support back-power unlike many other USB3 hubs.
 
 On the MEGA4 board, there is an "ideal diode" implemented with MOSFET (AO4447). This "ideal diode" connects the Vbus on Raspberry Pi 4B's USB 3.1 port and the 5V trace on MEGA4. Hence MEGA4 can draw current from Raspberry Pi 4B and get powered.
 
