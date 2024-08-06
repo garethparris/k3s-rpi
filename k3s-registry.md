@@ -68,6 +68,8 @@ spec:
               value: Kube Registry
             - name: REGISTRY_AUTH_HTPASSWD_PATH
               value: /auth/htpasswd
+            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+              value: /var/lib/registry
             - name: REGISTRY_STORAGE_DELETE_ENABLED
               value: "true"
           volumeMounts:
@@ -133,6 +135,11 @@ mirrors:
   "rpi-master:5000":
     endpoint:
       - "http://192.168.3.10:5000"
+configs:
+  "192.168.3.10:5000":
+    auth:
+      username: username
+      password: password
 ```
 
 - Reboot:

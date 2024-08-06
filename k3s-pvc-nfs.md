@@ -106,6 +106,8 @@ spec:
               value: Kube Registry
             - name: REGISTRY_AUTH_HTPASSWD_PATH
               value: /auth/htpasswd
+            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+              value: /mnt/nfs/registry
             - name: REGISTRY_STORAGE_DELETE_ENABLED
               value: "true"
           volumeMounts:
