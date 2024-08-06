@@ -6,7 +6,7 @@ metadata:
   labels:
     app: go-api
 spec:
-  replicas: 10
+  replicas: 1
   selector:
     matchLabels:
       app: go-api
@@ -17,13 +17,13 @@ spec:
     spec:
       containers:
         - name: go-api-container
-          image: rpi-master:5000/go-api:v1
+          image: rpi-master:5000/go-api:v1.0
           resources:
             limits:
               cpu: 100m
               memory: 200Mi
           ports:
-            - containerPort: 9001
+            - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -35,4 +35,4 @@ spec:
     app: go-api
   ports:
     - protocol: TCP
-      port: 9001
+      port: 8080

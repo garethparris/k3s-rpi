@@ -141,6 +141,18 @@ spec:
 
 ## Notes
 
+### Get list of images in remote registry
+
+```bash
+curl -X GET -u username:password http://rpi-master:5000/v2/_catalog     
+```
+
+### Get tags for the `go-api` repositry
+
+```bash
+curl -X GET -u username:password http://rpi-master:5000/v2/go-api/tags/list
+```
+
 ## Navigation
 
 - [Next](./)

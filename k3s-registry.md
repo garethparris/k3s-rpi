@@ -178,7 +178,7 @@ docker images
 
 ```console
 REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
-go-api                   v1        81bebf4de0fd   20 minutes ago   16.5MB
+go-api                   v1.0      81bebf4de0fd   20 minutes ago   16.5MB
 ```
 
 - Login to the K3S private repository, using the credentials you created for `htpasswd` above:
@@ -190,13 +190,13 @@ docker login rpi-master:5000
 - Tag the image:
 
 ```bash
-docker tag 81bebf4de0fd rpi-master:5000/go-api:v1
+docker tag 81bebf4de0fd rpi-master:5000/go-api:v1.0
 ```
 
 - Push to the private repository:
 
 ```bash
-docker push rpi-master:5000/go-api:v1
+docker push rpi-master:5000/go-api:v1.0
 ```
 
 - Create a simple manifest to generate 10 replicas with a service [go-api.yaml](./scripts/go-api.yaml):
@@ -221,13 +221,13 @@ spec:
     spec:
       containers:
         - name: go-api-container
-          image: rpi-master:5000/go-api:v1
+          image: rpi-master:5000/go-api:v1.0
           resources:
             limits:
               cpu: 100m
               memory: 200Mi
           ports:
-            - containerPort: 9001
+            - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -239,7 +239,7 @@ spec:
     app: go-api
   ports:
     - protocol: TCP
-      port: 9001
+      port: 8080
 ```
 
 Note the container image explicitly states the K3S private repository `image: pi-master:5000/go-api:v1`.
