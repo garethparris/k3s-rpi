@@ -101,7 +101,6 @@ sudo mdadm --create --verbose /dev/md0 --level=10 --raid-devices=4 /dev/sd[a-d]1
 
 ```console
 mdadm: layout defaults to n2
-mdadm: layout defaults to n2
 mdadm: chunk size defaults to 512K
 mdadm: size set to 249428992K
 mdadm: automatically enabling write-intent bitmap on large array

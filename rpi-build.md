@@ -15,8 +15,6 @@ On the Raspberry Pi 4B models I am using a 64GB SD card connected via a USB 3.0 
 
 ![Hardware Front View](./images/rack-front.png)
 
-In all Raspberry Pi models I am using a 64GB SD card, either via an external USB3 card reader, or in the SD card slot.
-
 Network connectivity is provided via a Ubiquity Unifi 16 port PoE switch.
 
 ![Ubiquity Switch Lite 16 PoE](./images/unifi-switch.png)
