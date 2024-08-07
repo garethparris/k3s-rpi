@@ -1,6 +1,6 @@
 # K3S Persistent Storage Setup
 
-This document describes how store the K3S private registry we created earlier on our NFS server instead of on the local SD card. It creates a Persistent Volume (PV) and Persistent Volume Claim (PVC) in K3S.
+This document describes how to store the K3S private registry we created earlier on our NFS server instead of on the local SD card. It creates a Persistent Volume (PV) and Persistent Volume Claim (PVC) in K3S.
 
 ## Create and Export NFS folder
 

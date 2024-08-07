@@ -92,7 +92,7 @@ sudo nano /boot/firmware/cmdline.txt
 - Add the following to the end of line 1:
 
 ```bash
- cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+ cgroup_enable=cpuset cgroup_enable=memory
 ```
 
 - Disable other services:
